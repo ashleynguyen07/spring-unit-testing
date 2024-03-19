@@ -22,16 +22,12 @@ class SomeServiceMockTest {
   @Test
   void calSumUsingDataService_empty() {
     when(dataService.retrieveAllData()).thenReturn(new int[]{});
-    int actualResult = service.calSumUsingDataService();
-    int expectTedResult = 0;
-    assertEquals(expectTedResult, actualResult);
+    assertEquals(0, service.calSumUsingDataService());
   }
 
   @Test
   void calSumUsingDataServiceBasic() {
     when(dataService.retrieveAllData()).thenReturn(new int[]{1, 2, 3, 3});
-    int actualResult = service.calSumUsingDataService();
-    int expectTedResult = 9;
-    assertEquals(expectTedResult, actualResult);
+    assertEquals(9, service.calSumUsingDataService());
   }
 }
