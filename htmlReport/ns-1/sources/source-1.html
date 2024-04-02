@@ -5,7 +5,7 @@
 <html id="htmlId">
 <head>
   <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
-  <title>Coverage Report > EmployeeRepository</title>
+  <title>Coverage Report > EmployeeServiceImpl</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/idea.min.css";
@@ -19,17 +19,53 @@
 <div class="breadCrumbs">
 Current scope:     <a href="../../index.html">all classes</a>
     <span class="separator">|</span>
-    <a href="../index.html">com.unittesting.springunittesting.repository</a>
+    <a href="../index.html">com.unittesting.springunittesting.service</a>
 </div>
 
-<h1>Coverage Summary for Class: EmployeeRepository (com.unittesting.springunittesting.repository)</h1>
+<h1>Coverage Summary for Class: EmployeeServiceImpl (com.unittesting.springunittesting.service)</h1>
 
 <table class="coverageStats">
 <tr>
   <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
 </tr>
 <tr>
-  <td class="name">EmployeeRepository</td>
+  <td class="name">EmployeeServiceImpl</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (10/10)
+  </span>
+</td>
 </tr>
 
 </table>
@@ -39,21 +75,53 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 
 <pre>
-<code class="sourceCode" id="sourceCode">&nbsp;package com.unittesting.springunittesting.repository;
+<code class="sourceCode" id="sourceCode">&nbsp;package com.unittesting.springunittesting.service;
 &nbsp;
 &nbsp;import com.unittesting.springunittesting.entity.Employee;
+&nbsp;import com.unittesting.springunittesting.repository.EmployeeRepository;
+&nbsp;import java.nio.file.attribute.UserPrincipalNotFoundException;
+&nbsp;import java.util.List;
 &nbsp;import java.util.Optional;
-&nbsp;import org.springframework.data.jpa.repository.JpaRepository;
-&nbsp;import org.springframework.data.jpa.repository.Query;
-&nbsp;import org.springframework.stereotype.Repository;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.stereotype.Service;
 &nbsp;
-&nbsp;@Repository
-&nbsp;public interface EmployeeRepository extends JpaRepository&lt;Employee, Long&gt; {
-&nbsp;  Optional&lt;Employee&gt; findByEmail(String email);
-&nbsp;  @Query(&quot;select e from Employee e where e.firstName = ?1 and e.lastName = ?2&quot;)
-&nbsp;  Employee findByJPQL(String firstName, String lastName);
-&nbsp;  @Query(value= &quot;select * from employees e where e.first_name = ?1 and e.last_name = ?2&quot;, nativeQuery = true )
-&nbsp;  Employee findByNativeSQL(String firstName, String lastName);
+&nbsp;@Service
+&nbsp;public class EmployeeServiceImpl implements EmployeeService{
+&nbsp;
+&nbsp;  private final EmployeeRepository employeeRepository;
+&nbsp;
+<b class="fc">&nbsp;  public EmployeeServiceImpl(EmployeeRepository employeeRepository) {</b>
+<b class="fc">&nbsp;    this.employeeRepository = employeeRepository;</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public Employee saveEmployee(Employee employee) {
+<b class="fc">&nbsp;    Optional&lt;Employee&gt; savedEmployee = employeeRepository.findByEmail(employee.getEmail());</b>
+<b class="fc">&nbsp;    if (savedEmployee.isPresent()) {</b>
+<b class="fc">&nbsp;      throw new IllegalStateException(&quot;Employee already exist with given email: &quot; + employee.getEmail());</b>
+&nbsp;    }
+<b class="fc">&nbsp;    return employeeRepository.save(employee);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public List&lt;Employee&gt; getAllEmployees() {
+<b class="fc">&nbsp;    return employeeRepository.findAll();</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public Optional&lt;Employee&gt; getEmployeeById(long id) {
+<b class="fc">&nbsp;    return employeeRepository.findById(id);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public Employee updateEmployee(Employee updatedEmployee) {
+<b class="fc">&nbsp;    return employeeRepository.save(updatedEmployee);</b>
+&nbsp;  }
+&nbsp;
+&nbsp;  @Override
+&nbsp;  public void deleteEmployee(long id) {
+<b class="fc">&nbsp;    employeeRepository.deleteById(id);</b>
+&nbsp;  }
 &nbsp;}
 </code>
 </pre>
@@ -78,7 +146,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2024-04-02 11:27</div>
+    <div style="float:right;">generated on 2024-04-02 14:06</div>
 </div>
 </body>
 </html>
